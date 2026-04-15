@@ -1,0 +1,15 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Bot runtime files
+srvbot.log
+*.log
+
+# Never commit config with real tokens/passwords
+# config.py is included but with placeholder values
