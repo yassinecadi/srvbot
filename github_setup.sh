@@ -127,7 +127,12 @@ srvbot/
 
 ## Install
 \`\`\`bash
-bash install.sh
+bash <(curl -sL https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/install.sh)
+\`\`\`
+
+Or clone and run locally:
+\`\`\`bash
+git clone https://github.com/${GH_USER}/${GH_REPO}.git && cd ${GH_REPO} && bash install.sh
 \`\`\`
 
 ## Requirements

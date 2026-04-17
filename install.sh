@@ -2,6 +2,9 @@
 # ═══════════════════════════════════════════════════════
 #   srvbot — Installer
 #   Installs in-place from the script's own directory.
+#
+#   One-liner install from GitHub:
+#     bash <(curl -sL https://raw.githubusercontent.com/yassinecadi/srvbot/main/install.sh)
 # ═══════════════════════════════════════════════════════
 
 set -e
@@ -28,11 +31,11 @@ echo ""
 # ── User input ────────────────────────────
 read -rp "Telegram Bot Token: "                TOKEN
 read -rp "Your Telegram Admin ID: "            ADMIN_ID
-read -rp "Domain [tesst.digidb.store]: "       DOMAIN
-read -rp "Your Telegram handle [@Chab3arbi]: " HANDLE
-read -rp "Network interface [eth0]: "          IFACE
+read -rp "Domain (e.g. yourdomain.com): "          DOMAIN
+read -rp "Your Telegram handle (e.g. @username): "  HANDLE
+read -rp "Network interface [eth0]: "               IFACE
 
-DOMAIN="${DOMAIN:-tesst.digidb.store}"
+DOMAIN="${DOMAIN:-yourdomain.com}"
 HANDLE="${HANDLE:-@admin}"
 IFACE="${IFACE:-eth0}"
 
@@ -119,5 +122,9 @@ echo -e "${BOLD}║${RESET}  Logs    : tail -f ${BOT_DIR}/srvbot.log     ${BOLD}
 echo -e "${BOLD}║${RESET}  Status  : systemctl status ${SERVICE}       ${BOLD}║${RESET}"
 echo -e "${BOLD}║${RESET}  GitHub  : bash github_setup.sh              ${BOLD}║${RESET}"
 echo -e "${BOLD}║${RESET}  Send /start to your bot                     ${BOLD}║${RESET}"
+echo -e "${BOLD}╠══════════════════════════════════════════════╣${RESET}"
+echo -e "${BOLD}║${RESET}  Re-install one-liner:                       ${BOLD}║${RESET}"
+echo -e "${BOLD}║${RESET}  bash <(curl -sL https://raw.githubusercontent${BOLD}║${RESET}"
+echo -e "${BOLD}║${RESET}    .com/yassinecadi/srvbot/main/install.sh)  ${BOLD}║${RESET}"
 echo -e "${BOLD}╚══════════════════════════════════════════════╝${RESET}"
 echo ""

@@ -50,9 +50,11 @@ def set_banner(new_banner: str) -> tuple:
             return False, "custom_response_text key not found in config.yaml"
         updated = re.sub(
             r'(custom_response_text:\s*)"[^"]*"',
-            f'\\1"{new_banner}"',
+            lambda m: f'{m.group(1)}"{new_banner}"',
             content
         )
+        if updated == content:
+            return False, 'Pattern not matched — config.yaml must have: custom_response_text: "..."'
         with open(path, "w") as f:
             f.write(updated)
         restart_service("wsssh")
