@@ -18,6 +18,16 @@ die()  { echo -e "${RED}[✘]${RESET} $1"; exit 1; }
 
 [[ $EUID -ne 0 ]] && die "Run as root."
 
+# When run via bash <(curl ...), BASH_SOURCE[0] is /dev/fd/N — not a real path.
+# In that case, clone the repo and re-exec from the real directory.
+if [[ ! -f "${BASH_SOURCE[0]}" ]]; then
+    CLONE_DIR="${1:-/opt/srvbot}"
+    info "Running from pipe/process substitution — cloning repo to ${CLONE_DIR}..."
+    apt-get install -y -qq git 2>/dev/null || true
+    [[ -d "$CLONE_DIR/.git" ]] || git clone https://github.com/yassinecadi/srvbot.git "$CLONE_DIR"
+    exec bash "$CLONE_DIR/install.sh"
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BOT_DIR="${SCRIPT_DIR}"
 SERVICE="telegram-srvbot"
