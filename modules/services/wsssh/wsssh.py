@@ -8,6 +8,7 @@ Pure logic — no Telegram imports.
 
 import re
 import os
+import config
 from modules.services.services import restart_service
 
 # Try multiple possible config locations
@@ -15,6 +16,8 @@ _POSSIBLE_PATHS = [
     "/root/wsssh/config.yaml",
     "/root/bots/wsssh/config.yaml",
 ]
+
+_SSH_BANNER_PATH = "/etc/ssh/banner.txt"
 
 
 def _find_config() -> str | None:
@@ -38,11 +41,28 @@ def get_banner() -> str:
         return f"Error: {e}"
 
 
+def _write_ssh_banner(msg: str) -> None:
+    """Rewrite /etc/ssh/banner.txt using message + domain from config."""
+    try:
+        domain = getattr(config, "DOMAIN", "")
+        lines = [
+            "╔══════════════════════════════════════════╗\n",
+            f"║  {msg}\n",
+        ]
+        if domain:
+            lines.append(f"║  Domain  : {domain}\n")
+        lines.append("╚══════════════════════════════════════════╝\n")
+        with open(_SSH_BANNER_PATH, "w") as f:
+            f.writelines(lines)
+    except Exception:
+        pass  # best-effort; SSH banner is not critical to fail the whole operation
+
+
 def set_banner(new_banner: str) -> tuple:
-    """Update banner in wsssh config.yaml and restart service."""
+    """Update banner in wsssh config.yaml and /etc/ssh/banner.txt, then restart service."""
     path = _find_config()
     if not path:
-        return False, f"wsssh config.yaml not found. Checked:\n" + "\n".join(_POSSIBLE_PATHS)
+        return False, "wsssh config.yaml not found. Checked:\n" + "\n".join(_POSSIBLE_PATHS)
     try:
         with open(path) as f:
             content = f.read()
@@ -57,6 +77,7 @@ def set_banner(new_banner: str) -> tuple:
             return False, 'Pattern not matched — config.yaml must have: custom_response_text: "..."'
         with open(path, "w") as f:
             f.write(updated)
+        _write_ssh_banner(new_banner)
         restart_service("wsssh")
         return True, f"Banner updated — wsssh restarted\nConfig: {path}"
     except Exception as e:
