@@ -9,6 +9,7 @@ Not async — get_all_stats is blocking (1.3s sleep for measurement).
 import config
 from modules.system.system import get_all_stats
 from modules.users.users   import get_all_users, get_active_count
+from modules.v2ray.v2ray   import list_users as v2ray_users, is_available as v2ray_available
 
 
 def build_main_text() -> str:
@@ -43,6 +44,8 @@ def build_main_text() -> str:
         f"💾 Disk: {disk['used']}GB/{disk['total']}GB • {disk['percent']}%",
         f"👥 Users: {active}/{len(user_list)} active",
     ]
+    if v2ray_available():
+        lines.append(f"⚡ V2Ray: `{len(v2ray_users())}` users")
     if st.get("last_run"):
         lines.append(f"🚀 Last speed test: `{st['last_run'][:10]}`")
 

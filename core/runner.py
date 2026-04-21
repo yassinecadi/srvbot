@@ -29,6 +29,7 @@ def build_app() -> Application:
     from modules.users.handler     import on_users_button, on_users_message
     from modules.services.handler  import on_services_button, on_services_message
     from modules.speedtest.handler import on_speedtest_button
+    from modules.v2ray.handler     import on_v2ray_button, on_v2ray_message
 
     app = Application.builder().token(config.TOKEN).build()
 
@@ -42,6 +43,7 @@ def build_app() -> Application:
     app.add_handler(CallbackQueryHandler(on_users_button,     pattern="^(menu_users|user_|chpass_|expiry_|lock_|unlock_|delete_)"))
     app.add_handler(CallbackQueryHandler(on_services_button,  pattern="^(menu_services|svc_)"))
     app.add_handler(CallbackQueryHandler(on_speedtest_button, pattern="^(menu_speedtest|speedtest_)"))
+    app.add_handler(CallbackQueryHandler(on_v2ray_button,     pattern="^(menu_v2ray|v2_)"))
 
     # ── Free text messages (multi-step flows) ─────────────────
     app.add_handler(MessageHandler(
@@ -63,11 +65,14 @@ async def _route_message(update, context):
     action = context.user_data.get("action", "")
 
     user_actions    = {"add_user_name", "add_user_pass", "chpass", "expiry"}
-    service_actions = {"wsssh_banner", "bot_addadmin"}
+    service_actions = {"bot_addadmin"}
+    v2ray_actions   = {"v2ray_add"}
 
     if action in user_actions:
         await on_users_message(update, context)
     elif action in service_actions:
         await on_services_message(update, context)
+    elif action in v2ray_actions:
+        await on_v2ray_message(update, context)
     else:
         await update.message.reply_text("Use /start")

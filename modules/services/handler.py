@@ -20,7 +20,6 @@ from modules.services.texts          import (
     build_service_detail_text,
     build_action_result,
 )
-from modules.services.wsssh.handler  import handle_wsssh_banner_prompt, on_wsssh_banner
 from modules.services.srvbot.handler import handle_addadmin_prompt, on_addadmin
 
 
@@ -93,16 +92,10 @@ async def on_services_button(update: Update, context: ContextTypes.DEFAULT_TYPE)
             reply_markup=kb_service_detail(name)
         )
 
-    elif data == "svc_wsssh_banner":
-        await handle_wsssh_banner_prompt(q, context)
-
     elif data == "svc_bot_addadmin":
         await handle_addadmin_prompt(q, context)
 
 
 async def on_services_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    action = context.user_data.get("action")
-    if action == "wsssh_banner":
-        await on_wsssh_banner(update.message, context)
-    elif action == "bot_addadmin":
+    if context.user_data.get("action") == "bot_addadmin":
         await on_addadmin(update.message, context)
