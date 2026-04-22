@@ -23,7 +23,11 @@ SERVICE="xray"
 
 # Detect srvbot config location
 SRVBOT_CONFIG=""
-for p in "/root/bots/srvbot/config.py" "/opt/srvbot/config.py" "/root/srvbot/config.py"; do
+for p in \
+    "/root/bots/srvbot/srvbot/config.py" \
+    "/root/bots/srvbot/config.py" \
+    "/opt/srvbot/config.py" \
+    "/root/srvbot/config.py"; do
     [[ -f "$p" ]] && SRVBOT_CONFIG="$p" && break
 done
 
