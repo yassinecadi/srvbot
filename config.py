@@ -15,7 +15,7 @@ HANDLE = "@yourhandle"
 IFACE  = "eth0"
 
 # ── V2Ray / Xray ──────────────────────────
-XRAY_CONFIG      = "/root/srtunnel/xray.json"
+XRAY_CONFIG      = "/root/xray/xray.json"
 XRAY_INBOUND_TAG = "xray-vless"
 
 # ── Managed systemd services ──────────────
