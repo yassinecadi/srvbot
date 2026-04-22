@@ -61,6 +61,7 @@ async def _route_message(update, context):
     """
     from modules.users.handler    import on_users_message
     from modules.services.handler import on_services_message
+    from modules.v2ray.handler    import on_v2ray_message
 
     action = context.user_data.get("action", "")
 
