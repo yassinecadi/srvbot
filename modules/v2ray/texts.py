@@ -11,10 +11,13 @@ from modules.v2ray.v2ray import is_available
 
 def build_v2ray_menu_text(users: list) -> str:
     if not is_available():
+        path = getattr(config, "XRAY_CONFIG", "/root/xray/xray.json")
         return (
             "⚡ *V2Ray*\n\n"
-            "❌ xray\\.json not found\\.\n"
-            "Check `XRAY_CONFIG` in config\\.py\\."
+            "❌ Xray not installed\\.\n\n"
+            f"Expected: `{path}`\n\n"
+            "Run on your VPS:\n"
+            "`bash /root/bots/srvbot/install\\_xray\\.sh`"
         )
     domain = getattr(config, "DOMAIN", "yourdomain.com")
     tag    = getattr(config, "XRAY_INBOUND_TAG", "xray-vless")
