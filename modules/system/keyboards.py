@@ -15,7 +15,10 @@ def kb_main() -> InlineKeyboardMarkup:
             InlineKeyboardButton("⚙️ Services",  callback_data="menu_services"),
         ],
         [
+            InlineKeyboardButton("⚡ V2Ray",      callback_data="menu_v2ray"),
             InlineKeyboardButton("🚀 Speed Test", callback_data="menu_speedtest"),
+        ],
+        [
             InlineKeyboardButton("🔄 Refresh",    callback_data="menu_refresh"),
         ],
     ])

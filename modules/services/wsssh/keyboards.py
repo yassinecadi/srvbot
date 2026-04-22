@@ -7,11 +7,6 @@ so services/keyboards.py can compose them.
 ─────────────────────────────────────────────
 """
 
-from telegram import InlineKeyboardButton
-
 
 def kb_wsssh_extra() -> list:
-    """Extra button rows for wsssh service detail page."""
-    return [
-        [InlineKeyboardButton("✏️ Change Banner", callback_data="svc_wsssh_banner")],
-    ]
+    return []

@@ -91,6 +91,13 @@ sed -i "s|@yourhandle|${HANDLE}|"                          "${BOT_DIR}/config.py
 sed -i "s|IFACE  = \"eth0\"|IFACE  = \"${IFACE}\"|"        "${BOT_DIR}/config.py"
 ok "config.py patched"
 
+# ── SSH banner ────────────────────────────
+info "Configuring SSH banner..."
+sed -i '/^Banner/d' /etc/ssh/sshd_config
+echo "Banner ${BOT_DIR}/bannerssh" >> /etc/ssh/sshd_config
+systemctl restart ssh 2>/dev/null || systemctl restart sshd 2>/dev/null || true
+ok "SSH banner set to ${BOT_DIR}/bannerssh"
+
 # ── Systemd service ───────────────────────
 info "Installing systemd service..."
 cat > /etc/systemd/system/${SERVICE}.service << EOF
